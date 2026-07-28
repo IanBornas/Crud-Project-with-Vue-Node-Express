@@ -19,9 +19,9 @@ const getEmployeesById = async (req,res) => {
         if (!doc.exists) {
             return res.status(404).json({message:'Employee not found'})
         }
-        res.json(employee)
+        res.json({ id: doc.id, ...doc.data() })
     } catch (error) {
-        res.status(500).json({ id: doc.id, ...doc.data() })
+        res.status(500).json({ error: error.message })
     }
 }
 
@@ -32,18 +32,56 @@ const createEmployee = async (req,res) => {
     if (!name || !email || !department || !position) {
       return res.status(400).json({ error: "Please fill the required forms" });
     }
-    const docRef = await db.collection("users").add({ name, email, department, position });
+    const docRef = await db.collection("employees").add({ name, email, department, position });
     res.status(201).json({ id: docRef.id, name, email, department, position });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 }
 
-//TODO Update andd by id and delete
+
+//update employee by id
+const updateEmployeeById = async(req,res)=>{
+    try{
+        const {id} = req.params;
+        const employeeData = req.body
+        const docRef = db.collection("employees").doc(id);
+        const doc = await docRef.get();
+        if (!doc.exists){
+            return res.status(404).json({ error: 'Employee not found' });
+        }
+        await docRef.update(employeeData);
+        res.status(200).json({message: 'Employee updated sucessfully!'})        
+    }catch(error){
+        res.status(500).json({ error: error.message });
+    }
+}
+
+//delete employee by id
+const deleteEmployeeById = async(req,res)=> {
+    try{
+        const {id} = req.params
+        const employeeData = req.body
+        const docRef = db.collection("employees").doc(id);
+        const doc = await docRef.get(); 
+        
+        if (!doc.exists){
+            return res.status(404).json({ error: 'Employee not found!' });
+        }
+
+        await docRef.delete(employeeData)
+        res.status(200).json({message: 'Employee Deleted sucessfully!'})    
+    }catch(error){
+        res.status(500).json({ error: error.message });
+    }
+}
 
 
 module.exports = {
     getEmployees,
     getEmployeesById,
-    createEmployee
+    createEmployee,
+    updateEmployeeById,
+    deleteEmployeeById
 }
+
