@@ -1,17 +1,41 @@
 import {createRouter, createWebHistory} from 'vue-router'
-import HomePage from '../pages/HomePage.vue'
+import AuthenticatedLayout from "../pages/layout/AuthenticatedLayout.vue"
+import Dashboard from '../pages/Dashboard.vue'
+import Directory from '../pages/Directory.vue'
+import notFound from '../pages/NotFound.vue'
 
-const routes = [
-    {
-        path: '/',
-        name: 'Home',
-        component: HomePage
-    }
-]
 
 const router = createRouter({
     history: createWebHistory(),
-    routes
+    routes: [
+        {
+      path: "/",
+      component: AuthenticatedLayout,
+      children: [
+        {
+          path: "/dashboard",
+          name: "dashboard",
+          component: Dashboard,
+        },
+        {
+          path: "/",
+          name: "directory",
+          component: Directory,
+        },
+      ],
+    },
+    {
+        path: "/:pathMatch(.*)*",
+        name: "not-found",
+        component: notFound,
+    }
+    ]
+})
+
+router.afterEach((to, from, failure) => {
+  if (!failure) {
+    setTimeout(() => window.HSStaticMethods.autoInit(), 100)
+  }
 })
 
 export default router
