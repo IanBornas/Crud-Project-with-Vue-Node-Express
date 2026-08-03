@@ -1,3 +1,8 @@
+<script setup>
+import SidebarLink from '@/component/navbar/NavButtons.vue'
+</script>
+
+
 <template>
   <div class="flex min-h-screen">
     <!-- Mobile sidebar toggle -->
@@ -42,25 +47,28 @@
       
       <div class="drawer-body px-2 pt-4">
         <ul class="menu p-0">
-          <li>
-            <RouterLink :to="{ name: 'directory' }">
-              <span class="icon-[tabler--folder] size-5" ></span>
-              <span class="overlay-minified:hidden text-white">Directory</span>
-            </RouterLink>
-          </li>
-
-          <li>
-            <RouterLink :to="{ name: 'dashboard' }">
-              <span class="icon-[tabler--home] size-5"></span>
-              <span class="overlay-minified:hidden text-white">Dashboard</span>
-            </RouterLink>
-          </li>
+              <SidebarLink
+                :to="{ name: 'directory' }"
+                label="Directory"
+                icon="icon-[tabler--folder]"
+              />
+              <SidebarLink
+                :to="{ name: 'dashboard' }"
+                label="Dashboard"
+                icon="icon-[tabler--home]"
+              />
         </ul>
       </div>
     </aside>
 
-    <main class="flex-1 p-6 sm:ml-64">
-      <RouterView />
+    <main class=" min-h-screen w-full
+         sm:ps-64
+         overlay-minified:sm:ps-17
+         transition-[padding] duration-300 ease-in-out">
+         
+        <div class="mx-auto w-full max-w-6xl p-6">
+            <RouterView />
+        </div>
     </main>
   </div>
 </template>
