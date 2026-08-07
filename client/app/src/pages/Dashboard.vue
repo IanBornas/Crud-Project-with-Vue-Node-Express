@@ -22,9 +22,11 @@ onMounted(loadEmployees)
 </script>
 
 <template>
-
+    <div class="space-y-6">
     <DashboardTitle/>
     <p v-if="error">{{error}}</p>
     <DashboardTable :employees="employees"/>
+    </div>
+
     
 </template>

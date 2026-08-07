@@ -15,6 +15,6 @@
                 This is where employee management takes place.
             </p>
             </div>
-        </div>
+        </div>     
     </div>
 </template>

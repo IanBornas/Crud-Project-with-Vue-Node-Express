@@ -1,6 +1,11 @@
 <script setup>
+import { onMounted } from 'vue'
+import { HSOverlay } from 'flyonui/dist/index.mjs'
 import DashboardActions from './DashboardActions.vue';
+import CreateEmployeeButton from './CreateEmployeeButton.vue';
 import EmployeeDashboardRow from './EmployeeDashboardRow.vue';
+import EditEmployeeModal from './EditEmployeeModal.vue';
+import DeleteEmployeeModal from './DeleteEmployeeModal.vue';
 
 defineProps({
     employees:{
@@ -9,19 +14,28 @@ defineProps({
     }
 })
 
+onMounted(() => {
+  HSOverlay.autoInit()
+})
 
-function testEdit(employeeId) {
+function editEmployees(employeeId) {
   console.log('Open edit modal for:', employeeId)
+  HSOverlay.open('#edit-employee-modal')
 }
 
-function testDelete(employeeId) {
+function deleteEmployees(employeeId) {
   console.log('Open delete confirmation for:', employeeId)
+  HSOverlay.open('#delete-employee-modal')
 }
 
 </script>
 
 <template>
 <div class="w-full overflow-x-auto">
+    <div class="mb-4 flex justify-end">
+        <CreateEmployeeButton />
+    </div>
+    <div class="w-full overflow-x-auto">
     <table class="table">
         <thead>
         <tr>
@@ -33,20 +47,24 @@ function testDelete(employeeId) {
         </tr>
         </thead>
 
-        <tbody>
+        <tbody> 
             <EmployeeDashboardRow
             v-for="employee in employees"
             :key="employee.id"
             :employee="employee"
-            >
+            >   
             <template #actions="{ employee }">
-                <DashboardActions
-                @edit="testEdit(employee.id)"
-                @delete="testDelete(employee.id)"
+                <DashboardActions       
+                @edit="editEmployees(employee.id)"
+                @delete="deleteEmployees(employee.id)"
                 />
             </template>
             </EmployeeDashboardRow>
         </tbody>
     </table>
+        <EditEmployeeModal />
+        <DeleteEmployeeModal />
+    </div>
+
     </div>
 </template>
