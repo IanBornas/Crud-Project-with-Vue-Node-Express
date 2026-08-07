@@ -1,18 +1,19 @@
 <script setup>
     defineProps({
-    employee: { type: String, required: true },
+    employee: { type: Object, required: true },
     })
     const emit = defineEmits (['edit','delete'])
 </script>
 
 <template>
-    <td>{{employee.name}}</td>
-    <td>{{employee.email}}</td>
-    <td>{{employee.department}}</td>
-    <td>{{employee.position}}</td>
-    
-    <td>
-        <slot name="actions" :employee="employee"/>
-    </td>
-    
+    <tr class="border-b border-gray-200">
+        <td class="whitespace-nowrap px-6 py-4">{{employee.name}}</td>
+        <td class="whitespace-nowrap px-6 py-4">{{employee.email}}</td>
+        <td class="whitespace-nowrap px-6 py-4">{{employee.department}}</td>
+        <td class="whitespace-nowrap px-6 py-4">{{employee.position}}</td>
+        
+        <td>
+            <slot name="actions" :employee="employee"/>
+        </td>
+    </tr>
 </template>

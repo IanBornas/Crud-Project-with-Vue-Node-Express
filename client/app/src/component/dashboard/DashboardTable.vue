@@ -4,7 +4,7 @@ import EmployeeDashboardRow from './EmployeeDashboardRow.vue';
 
 defineProps({
     employees:{
-        type: Object,
+        type: Array,
         required: true
     }
 })
