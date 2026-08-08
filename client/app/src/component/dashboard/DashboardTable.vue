@@ -7,6 +7,8 @@ import EmployeeDashboardRow from './EmployeeDashboardRow.vue';
 import EditEmployeeModal from './EditEmployeeModal.vue';
 import DeleteEmployeeModal from './DeleteEmployeeModal.vue';
 
+const emit = defineEmits(['employee-created'])
+
 defineProps({
     employees:{
         type: Array,
@@ -33,7 +35,7 @@ function deleteEmployees(employeeId) {
 <template>
 <div class="w-full overflow-x-auto">
     <div class="mb-4 flex justify-end">
-        <CreateEmployeeButton />
+        <CreateEmployeeButton @employee-created="emit('employee-created')" />
     </div>
     <div class="w-full overflow-x-auto">
     <table class="table">

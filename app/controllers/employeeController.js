@@ -21,7 +21,7 @@ const getEmployeesById = async (req,res) => {
         }
         res.json({ id: doc.id, ...doc.data() })
     } catch (error) {
-        res.status(500).json({ error: error.message })
+        res.status(500).json({ error: error.message })  
     }
 }
 
