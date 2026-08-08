@@ -4,6 +4,7 @@ import { HSOverlay } from 'flyonui/dist/index.mjs'
 import DashboardActions from './DashboardActions.vue';
 import CreateEmployeeButton from './CreateEmployeeButton.vue';
 import EmployeeDashboardRow from './EmployeeDashboardRow.vue';
+import EmployeeSearchFilter from './EmployeeSearchFilter.vue';
 import EditEmployeeModal from './EditEmployeeModal.vue';
 import DeleteEmployeeModal from './DeleteEmployeeModal.vue';
 
@@ -34,39 +35,43 @@ function deleteEmployees(employeeId) {
 
 <template>
 <div class="w-full overflow-x-auto">
-    <div class="mb-4 flex justify-end">
+    <div class="mb-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+        <EmployeeSearchFilter />
         <CreateEmployeeButton @employee-created="emit('employee-created')" />
     </div>
-    <div class="w-full overflow-x-auto">
-    <table class="table">
-        <thead>
-        <tr>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Department</th>
-            <th>Position</th>
-            <th>Actions</th>
-        </tr>
-        </thead>
+    <!-- scrollable table container -->
+        <div class="w-full overflow-x-auto">
+            <div class="max-h-[28rem] overflow-y-auto rounded-box border border-base-content/10">
+                <table class="table">
+                    <thead class="sticky top-0 z-10 bg-base-100">
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Department</th>
+                            <th>Position</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
 
-        <tbody> 
-            <EmployeeDashboardRow
-            v-for="employee in employees"
-            :key="employee.id"
-            :employee="employee"
-            >   
-            <template #actions="{ employee }">
-                <DashboardActions       
-                @edit="editEmployees(employee.id)"
-                @delete="deleteEmployees(employee.id)"
-                />
-            </template>
-            </EmployeeDashboardRow>
-        </tbody>
-    </table>
-        <EditEmployeeModal />
-        <DeleteEmployeeModal />
-    </div>
+                    <tbody>
+                        <EmployeeDashboardRow
+                        v-for="employee in employees"
+                        :key="employee.id"
+                        :employee="employee"
+                        >
+                        <template #actions="{ employee }">
+                            <DashboardActions
+                            @edit="editEmployees(employee.id)"
+                            @delete="deleteEmployees(employee.id)"
+                            />
+                        </template>
+                        </EmployeeDashboardRow>
+                    </tbody>
+                </table>
+            </div>
 
+            <EditEmployeeModal />
+            <DeleteEmployeeModal />
+        </div>
     </div>
 </template>
