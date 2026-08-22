@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import { HSOverlay } from 'flyonui/dist/index.mjs'
 import DashboardActions from './DashboardActions.vue';
 import CreateEmployeeButton from './CreateEmployeeButton.vue';
@@ -9,8 +9,9 @@ import EditEmployeeModal from './EditEmployeeModal.vue';
 import DeleteEmployeeModal from './DeleteEmployeeModal.vue';
 
 const emit = defineEmits(['employee-created'])
+const searchQuery = ref('')
 
-defineProps({
+const props = defineProps({
     employees:{
         type: Array,
         required: true
@@ -31,12 +32,36 @@ function deleteEmployees(employeeId) {
   HSOverlay.open('#delete-employee-modal')
 }
 
+const searchFilteredEmployees = computed(() => {
+
+    console.log('EMPLOYEES PROP:', props.employees)
+    console.log('SEARCH:', searchQuery.value)
+    
+
+    const query = searchQuery.value.toLowerCase().trim();
+
+    if (!query) {
+        return props.employees;
+    }
+
+    return props.employees.filter(employee =>
+        employee.name?.toLowerCase().includes(query) ||
+        employee.email?.toLowerCase().includes(query) ||
+        employee.department?.toLowerCase().includes(query) ||
+        employee.position?.toLowerCase().includes(query)
+    );
+});
+
+watch(searchQuery, (value) => {
+    console.log('SEARCH:', value); //watches the searchfilter input
+});
+
 </script>
 
 <template>
 <div class="w-full overflow-x-auto">
     <div class="mb-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-        <EmployeeSearchFilter />
+        <EmployeeSearchFilter v-model="searchQuery" />
         <CreateEmployeeButton @employee-created="emit('employee-created')" />
     </div>
     <!-- scrollable table container -->
@@ -55,7 +80,7 @@ function deleteEmployees(employeeId) {
 
                     <tbody>
                         <EmployeeDashboardRow
-                        v-for="employee in employees"
+                        v-for="employee in searchFilteredEmployees"
                         :key="employee.id"
                         :employee="employee"
                         >

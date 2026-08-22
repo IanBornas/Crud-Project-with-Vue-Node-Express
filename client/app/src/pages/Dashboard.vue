@@ -14,6 +14,7 @@ async function loadEmployees() {
     employees.value = response.data
   } catch (error) {
     error.value = err.response?.data?.error ?? 'Could not load employees.'
+    console.error(error)
   }
 }
 

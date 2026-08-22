@@ -1,6 +1,7 @@
 <script setup>
 import {ref} from "vue"
 import { createEmployee } from "@/services/employees";
+import CreateEmployeeConfirmation from "./CreateEmployeeConfirmation.vue";
 
 const emit = defineEmits(['employee-created'])
 
@@ -11,14 +12,17 @@ const form = ref({
     department: ""
 })
 
-
 const isSubmitting = ref(false)
+const showConfirmation = ref(false)
 const errorMessage = ref("")
+
+
+
 
 const handleCreateEmployee = async () => {
     try {
-         isSubmitting.value = ref(true)
-         errorMessage.value = ref("")
+         isSubmitting.value = true
+         errorMessage.value = ""
 
         if (!form.value.name || !form.value.email || !form.value.position || !form.value.department) {
             console.log("please fill up the following details to proceed!")
@@ -32,6 +36,8 @@ const handleCreateEmployee = async () => {
                 position:"",
                 department: ""
             }
+            
+
             //close modal
             const modal = document.querySelector("#form-modal");
 
