@@ -26,7 +26,7 @@ import SidebarLink from '@/component/navbar/NavButtons.vue'
       <div class="drawer-header overlay-minified:px-3.75 w-full py-2 flex items-center justify-between gap-3">
         <span class="icon-[solar--user-bold] size-10"></span>
         <h3 class="drawer-title text-m font-semibold overlay-minified:hidden text-white">
-          Employee Management System
+          HRTrak
         </h3>
 
         <div class="hidden sm:block">
@@ -61,7 +61,7 @@ import SidebarLink from '@/component/navbar/NavButtons.vue'
       </div>
     </aside>
 
-    <main class=" min-h-screen w-full
+    <main class="min-h-screen w-full bg-gray-200
          sm:ps-64
          overlay-minified:sm:ps-17
          transition-[padding] duration-300 ease-in-out">

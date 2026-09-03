@@ -8,8 +8,12 @@ import EmployeeSearchFilter from './EmployeeSearchFilter.vue';
 import EditEmployeeModal from './EditEmployeeModal.vue';
 import DeleteEmployeeModal from './DeleteEmployeeModal.vue';
 
+import ExportAsCsv from './ExportAsCsv.vue';
+
 const emit = defineEmits(['employee-created'])
 const searchQuery = ref('')
+
+
 
 const props = defineProps({
     employees:{
@@ -62,11 +66,14 @@ watch(searchQuery, (value) => {
 <div class="w-full overflow-x-auto">
     <div class="mb-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <EmployeeSearchFilter v-model="searchQuery" />
-        <CreateEmployeeButton @employee-created="emit('employee-created')" />
+        <div class="flex items-center gap-5">
+            <ExportAsCsv />
+            <CreateEmployeeButton @employee-created="emit('employee-created')" />
+        </div>
     </div>
     <!-- scrollable table container -->
         <div class="w-full overflow-x-auto">
-            <div class="max-h-[28rem] overflow-y-auto rounded-box border border-base-content/10">
+            <div class="max-h-[28rem] overflow-y-auto rounded-box border border-base-content/10 bg-base-100">
                 <table class="table">
                     <thead class="sticky top-0 z-10 bg-base-100">
                         <tr>
@@ -96,7 +103,9 @@ watch(searchQuery, (value) => {
             </div>
 
             <EditEmployeeModal />
-            <DeleteEmployeeModal />
+            <DeleteEmployeeModal
+                
+            />
         </div>
     </div>
 </template>

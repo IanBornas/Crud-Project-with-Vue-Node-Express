@@ -2,6 +2,7 @@
 import {ref} from "vue"
 import { createEmployee } from "@/services/employees";
 import CreateEmployeeConfirmation from "./CreateEmployeeConfirmation.vue";
+import createEmployeeFormValidations from "./createEmployeeFormValidations.vue";
 
 const emit = defineEmits(['employee-created'])
 
@@ -15,20 +16,30 @@ const form = ref({
 const isSubmitting = ref(false)
 const showConfirmation = ref(false)
 const errorMessage = ref("")
+const validationForm = ref(null)
 
 
 
 
-const handleCreateEmployee = async () => {
+const handleCreateEmployee = () => {
+    errorMessage.value = ""
+
+    const sanitizedForm = validationForm.value?.validate()
+
+    if (!sanitizedForm) {
+        return
+    }
+
+    form.value = sanitizedForm
+    showConfirmation.value = true
+}
+
+const confirmCreateEmployee = async () => {
     try {
          isSubmitting.value = true
          errorMessage.value = ""
-
-        if (!form.value.name || !form.value.email || !form.value.position || !form.value.department) {
-            console.log("please fill up the following details to proceed!")
-            return
-        }
             const response = await createEmployee(form.value)
+            showConfirmation.value = false
             //clear form
             form.value = {  
                 name: "",
@@ -140,8 +151,13 @@ const handleCreateEmployee = async () => {
                     />
                     </div>
                 </div>
+            </div>
+                <div>
+                    <createEmployeeFormValidations
+                        ref="validationForm"
+                        :form="form"
+                    />
                 </div>
-
                 <div class="modal-footer">
                 <button type="submit" :disabled="isSubmitting" class="btn btn-primary bg-green-600">
                     {{ isSubmitting ? "Creating..." : "Create Employee" }}
@@ -151,4 +167,11 @@ const handleCreateEmployee = async () => {
             </div>
         </div>
         </div>
+
+        <CreateEmployeeConfirmation
+            :show="showConfirmation"
+            :is-submitting="isSubmitting"
+            @cancel="showConfirmation = false"
+            @confirm="confirmCreateEmployee"
+        />
 </template>
