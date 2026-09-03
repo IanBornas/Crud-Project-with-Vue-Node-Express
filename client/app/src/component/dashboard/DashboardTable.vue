@@ -1,17 +1,17 @@
 <script setup>
 import { ref, computed, onMounted, watch } from 'vue'
-import { HSOverlay } from 'flyonui/dist/index.mjs'
 import DashboardActions from './DashboardActions.vue';
 import CreateEmployeeButton from './CreateEmployeeButton.vue';
 import EmployeeDashboardRow from './EmployeeDashboardRow.vue';
 import EmployeeSearchFilter from './EmployeeSearchFilter.vue';
 import EditEmployeeModal from './EditEmployeeModal.vue';
 import DeleteEmployeeModal from './DeleteEmployeeModal.vue';
-
 import ExportAsCsv from './ExportAsCsv.vue';
 
-const emit = defineEmits(['employee-created'])
+
+const emit = defineEmits(['employee-created', 'employee-deleted'])
 const searchQuery = ref('')
+const selectedEmployee = ref(null)
 
 
 
@@ -27,14 +27,14 @@ onMounted(() => {
 })
 
 function editEmployees(employeeId) {
-  console.log('Open edit modal for:', employeeId)
-  HSOverlay.open('#edit-employee-modal')
+    console.log('Open edit modal for:', employeeId)
 }
 
-function deleteEmployees(employeeId) {
-  console.log('Open delete confirmation for:', employeeId)
-  HSOverlay.open('#delete-employee-modal')
+function deleteEmployees(employee) {
+    selectedEmployee.value = employee
+    console.log('Open delete confirmation for:', employee.id)
 }
+
 
 const searchFilteredEmployees = computed(() => {
 
@@ -94,7 +94,7 @@ watch(searchQuery, (value) => {
                         <template #actions="{ employee }">
                             <DashboardActions
                             @edit="editEmployees(employee.id)"
-                            @delete="deleteEmployees(employee.id)"
+                            @delete="deleteEmployees(employee)"
                             />
                         </template>
                         </EmployeeDashboardRow>
@@ -104,7 +104,9 @@ watch(searchQuery, (value) => {
 
             <EditEmployeeModal />
             <DeleteEmployeeModal
-                
+                :employee-id="selectedEmployee?.id"
+                :employee="selectedEmployee"
+                @deleted="emit('employee-deleted')"
             />
         </div>
     </div>

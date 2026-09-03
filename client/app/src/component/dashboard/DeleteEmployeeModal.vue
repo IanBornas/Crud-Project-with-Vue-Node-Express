@@ -1,5 +1,39 @@
 <script setup>
+import {ref} from 'vue'
 import { deleteEmployeeById } from '@/services/employees';
+import { HSOverlay } from 'flyonui/dist/index.mjs';
+
+const props = defineProps({
+  employeeId: {
+    type: [String, Number],
+    default: null
+  },
+  employee: {
+    type: Object,
+    default: null
+  }
+})
+
+const emit = defineEmits(['deleted'])
+const isLoading = ref(false)
+
+const handleDelete = async () => {
+  if (!props.employeeId) return
+  
+  try {
+    isLoading.value = true
+    await deleteEmployeeById(props.employeeId)
+
+    HSOverlay.close('#delete-employee-modal')
+    emit('deleted', props.employeeId)
+
+  } catch (error) {
+    console.error('Failed to delete employee:', error)
+  } finally {
+    isLoading.value = false
+  }
+}
+
 </script>
 
 <template>
@@ -13,11 +47,11 @@ import { deleteEmployeeById } from '@/services/employees';
         </button>
       </div>
       <div class="modal-body">
-             do you wish to proceed?
+            Are you sure you want to delete employee: {{ employee?.name }}?
       </div>
       <div class="modal-footer">
-        <button  type="button" class="btn btn-soft btn-secondary" data-overlay="#delete-employee-modal"><Cancel>Cancel</Cancel></button>
-        <button @click="" type="button" class="btn btn-primary hover:bg-red-700 bg-red-600">Delete</button>
+        <button type="button" class="btn btn-soft btn-secondary" data-overlay="#delete-employee-modal">Cancel</button>
+        <button @click="handleDelete" :disabled="isLoading || !employeeId" type="button" class="btn btn-primary hover:bg-red-700 bg-red-600">{{ isLoading ? 'Deleting...' : 'Delete' }}</button>
       </div>
     </div>
   </div>

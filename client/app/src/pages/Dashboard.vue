@@ -26,7 +26,11 @@ onMounted(loadEmployees)
     <div class="space-y-6">
     <DashboardTitle/>
     <p v-if="error">{{error}}</p>
-    <DashboardTable :employees="employees" @employee-created="loadEmployees"/>
+    <DashboardTable
+      :employees="employees"
+      @employee-created="loadEmployees"
+      @employee-deleted="loadEmployees"
+    />
     </div>
 
     
