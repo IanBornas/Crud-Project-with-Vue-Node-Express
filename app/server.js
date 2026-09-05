@@ -20,7 +20,7 @@ server.get('/',(req,res) => {
 
 
 // Route mounting: keep the backend contract aligned with the Vercel /api rewrite.
-server.use("/api/employees" ,employeeRoutes)
+server.use("/api" ,employeeRoutes)
 
 
 // Start server
