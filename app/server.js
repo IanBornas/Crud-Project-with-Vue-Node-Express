@@ -25,3 +25,5 @@ server.use("/employees" ,employeeRoutes)
 
 // Start server
 server.listen(PORT, () => console.log(`Server running on port http://localhost:${PORT}`));
+
+module.exports = server

@@ -13,6 +13,6 @@ const emit = defineEmits(['update:modelValue'])
 <input  :value="modelValue"
         @input="emit('update:modelValue', $event.target.value)" 
         type="text"  placeholder="Search Employee" 
-        class="input max-w-sm border-2 bordder-base-content/80" />
+        class="input max-w-sm border-2 border-base-content/80" />
 
 </template>
