@@ -12,9 +12,10 @@ async function loadEmployees() {
   try {
     const response = await getEmployees()
     employees.value = response.data
-  } catch (error) {
-    error.value = err.response?.data?.error ?? 'Could not load employees.'
-    console.error(error)
+  } catch (loadError) {
+    // Keep refresh errors visible without shadowing the reactive error message.
+    error.value = loadError.response?.data?.error ?? 'Could not load employees.'
+    console.error(loadError)
   }
 }
 
@@ -30,6 +31,7 @@ onMounted(loadEmployees)
       :employees="employees"
       @employee-created="loadEmployees"
       @employee-deleted="loadEmployees"
+      @employee-updated="loadEmployees"
     />
     </div>
 

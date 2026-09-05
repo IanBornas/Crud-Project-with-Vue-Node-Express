@@ -1,10 +1,13 @@
 <script setup>
+    import { nextTick } from 'vue'
     import { HSOverlay } from 'flyonui/dist/index.mjs'
 
     const emit = defineEmits (['edit','delete'])
 
-    const openEditModal = () => {
+    const openEditModal = async () => {
         emit('edit')
+        // Wait for the selected employee to render into the edit form before opening it.
+        await nextTick()
         HSOverlay.open('#edit-employee-modal')
     }
 

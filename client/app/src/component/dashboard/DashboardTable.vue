@@ -7,9 +7,10 @@ import EmployeeSearchFilter from './EmployeeSearchFilter.vue';
 import EditEmployeeModal from './EditEmployeeModal.vue';
 import DeleteEmployeeModal from './DeleteEmployeeModal.vue';
 import ExportAsCsv from './ExportAsCsv.vue';
+import { HSOverlay } from 'flyonui/dist/index.mjs';
 
 
-const emit = defineEmits(['employee-created', 'employee-deleted'])
+const emit = defineEmits(['employee-created', 'employee-deleted', 'employee-updated'])
 const searchQuery = ref('')
 const selectedEmployee = ref(null)
 
@@ -27,7 +28,8 @@ onMounted(() => {
 })
 
 function editEmployees(employeeId) {
-    console.log('Open edit modal for:', employeeId)
+    // Store the clicked row before DashboardActions opens the existing modal.
+    selectedEmployee.value = props.employees.find(employee => employee.id === employeeId) ?? null
 }
 
 function deleteEmployees(employee) {
@@ -102,7 +104,11 @@ watch(searchQuery, (value) => {
                 </table>
             </div>
 
-            <EditEmployeeModal />
+            <EditEmployeeModal
+                :employee-id="selectedEmployee?.id"
+                :employee="selectedEmployee"
+                @updated="emit('employee-updated')"
+            />
             <DeleteEmployeeModal
                 :employee-id="selectedEmployee?.id"
                 :employee="selectedEmployee"
