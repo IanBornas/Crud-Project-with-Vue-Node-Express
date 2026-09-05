@@ -90,7 +90,7 @@ npm run dev
 Open your browser or use curl to check the health or list endpoint (adjust base path if different):
 
 ```bash
-curl http://localhost:3000/employees
+curl http://localhost:3000/api/employees
 ```
 
 Notes:
@@ -105,11 +105,11 @@ The employee routes are defined in `routes/employeeRoutes.js` and handled by `co
 
 Common endpoints (adjust base path as implemented in `server.js`):
 
-- `GET /employees` — list employees
-- `GET /employees/:id` — get one employee
-- `POST /employees` — create employee
-- `PUT /employees/:id` — update employee
-- `DELETE /employees/:id` — delete employee
+- `GET /api/employees` — list employees
+- `GET /api/employees/:id` — get one employee
+- `POST /api/employees` — create employee
+- `PUT /api/employees/:id` — update employee
+- `DELETE /api/employees/:id` — delete employee
 
 Use a tool like Postman or curl to test the endpoints.
 
