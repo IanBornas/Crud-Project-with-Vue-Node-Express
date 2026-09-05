@@ -24,6 +24,9 @@ server.use("/api" ,employeeRoutes)
 
 
 // Start server
-server.listen(PORT, () => console.log(`Server running on port http://localhost:${PORT}`));
+// Only listen locally. Vercel handles listening automatically in production.
+if (process.env.NODE_ENV !== 'production') {
+    server.listen(PORT, () => console.log(`Server running on port http://localhost:${PORT}`));
+}
 
 module.exports = server
