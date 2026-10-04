@@ -1,4 +1,4 @@
-# CRUD App
+# HRTrak CRUD App
 
 A simple CRUD (Create, Read, Update, Delete) application built with Node.js and Express, using Firebase for data/storage integration.
 
